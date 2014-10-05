@@ -21,16 +21,22 @@
         <div id="topo">
             <a href="http://localhost:8181/projetojsf/restrict/home.faces"><div id="logotipo"></div></a>  
             
-            <div id="logoff">
-                <h:form>
-                    <br/>
+            <div id="logoff1">
+ 
+                    <p:menubar styleClass="labelmenutopo">
+                       
+                        <p:submenu label="SEJA BEM VINDO(A) #{bbUsuarioLogado.procuraPessoa().nomePessoa}!" styleClass="stylesubmenu">
+                            <p:menuitem value="Sair" url="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout" styleClass="stylemenuitem"/>
+                    </p:submenu>
+                    </p:menubar>
+                    <!--<br/>
                     <h5><h:outputText value="SEJA BEM VINDO(A) #{bbUsuarioLogado.procuraPessoa().nomePessoa}!"/></h5>
                     <br/>
                     <a href="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">
-	               <!-- <h4>LOGOFF</h4>-->
+	                <h4>Desconectar</h4>
 	            </a>
+-->
 
-                </h:form>
             </div>
 
         </div>  
@@ -72,7 +78,7 @@
                 <p:menuitem value="Cadastrar" icon="/resources/restrict/images/music.png"  url="#"/>
                 <p:menuitem value="Consultar" icon="/resources/restrict/images/email.png" url="#"/>
             </p:stack>-->
-             <h:form>
+            <!-- <h:form>
                  <p:dock rendered="true" itemWidth="70">
                
                     
@@ -87,7 +93,7 @@
                 <p:menuitem value="Sair" icon="/resources/restrict/images/sair.png" url="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout"/>
                 
             </p:dock>
-           </h:form>
+           </h:form>-->
            
            <!--
            <a href="http://www.semeru.com.br/"><img src="/resources/restrict/images/logo_mini.png" /></a>
