@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../resources/main.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="tarefas">
+        <p:fieldset legend="Setor Empresa">
+
+            <p:tabView dynamic="true" id="tbv1">
+                <p:tab title="setorEmpresa">
+                    <h:form prependId="false" id="formSetorEmpresa">
+                        <p:growl id="msg0"/>
+                        <h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid" id="grid0">
+
+                            <h:outputLabel/>
+
+                            <h:inputHidden id="idativo" value="#{mbSetorEmpresa.setorEmpresa.idSetorEmpresa}"/>
+                            
+                            <h:outputLabel for="codigoSetorEmpresa" value="Codigo: "/>
+                            <p:inputText id="codigoSetorEmpresa" size="30" value="#{mbSetorEmpresa.setorEmpresa.codigoSetorEmpresa}" 
+                                          required="true" 
+                                         requiredMessage="O campo Codigo é obrigatorio "/>
+
+                            <h:outputLabel for="setorDesc" value="Setor Empresa: "/>
+                            <p:inputText id="setorDesc" size="30" value="#{mbSetorEmpresa.setorEmpresa.descricaoSetorEmpresa}" 
+                                         onkeyup="this.value = this.value.toUpperCase()" required="true" 
+                                         requiredMessage="O campo Descricao é obrigatorio "/>
+
+                            <p:panel>
+                                <p:commandButton value="Salvar" action="#{mbSetorEmpresa.addSetorEmpresa()}" 
+                                                 image="ui icon ui-icon-disk" update="@form :formtable"/>
+
+                                <p:commandButton value="Limpar" action="#{mbSetorEmpresa.limpSetorEmpresa()}" 
+                                                 image="ui icon ui-icon-close" update="@form"/>
+                            </p:panel>
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                </p:tab>
+
+            </p:tabView>
+
+
+            <h:form id="formtable">
+
+                <p:growl id="msg1"/>
+
+                <p:dataTable id="idtipoequipamento" var="setorempresa" value="#{mbSetorEmpresa.setorEmpresas}" widgetVar="setorempresaa" 
+                             paginator="true" rows="10" emptyMessage="Nenhum registro encontrado" paginatorTemplate="{CurrentPageReport} {FirstPageLink}
+                             {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" caseSensitiveSort="true" >
+                    
+                    <f:facet name="header">Lista de Tipos de Equipamentos 
+                    <p:outputPanel>
+                    <p:inputText id="globalFilter" onkeyup="PF('setorempresaa').filter()" style="float:right" placeholder="Digite para pesquisar"/>
+                    </p:outputPanel>
+                    </f:facet>
+                    
+                    
+                    
+                    <p:column sortBy="#{setorempresa.codigoSetorEmpresa}">
+                        <f:facet name="header">
+                            <h:outputText value="Codigo Setor: "/>
+                        </f:facet> 
+                        <h:outputText value="#{setorempresa.codigoSetorEmpresa}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Descricao Setor: "/>
+                        </f:facet> 
+                        <h:outputText value="#{setorempresa.descricaoSetorEmpresa}"/>
+                    </p:column>
+                    
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Editar: "/>
+                        </f:facet> 
+
+                        <p:commandButton value="Editar" image="ui-icon-pencil" ajax="false"
+                                         process="@this" update="@form" action="#{mbSetorEmpresa.editSetorEmpresa()}">
+                            <f:setPropertyActionListener target="#{mbSetorEmpresa.setorEmpresa}" value="#{setorempresa}"/>  
+                            <f:setPropertyActionListener target="#{mbSetorEmpresa.setorEmpresa.idSetorEmpresa}" value="#{mbSetorEmpresa.setorEmpresa.idSetorEmpresa}"/> 
+
+
+
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Deletar: "/>
+                        </f:facet> 
+                        <p:commandButton value="Remover" action="#{mbSetorEmpresa.deleteSetorEmpresa()}"
+                                         image="ui-icon ui-icon-close" update="@form">
+                            <f:setPropertyActionListener target="#{mbSetorEmpresa.setorEmpresa}"
+                                                         value="#{setorempresa}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>       
+        </p:fieldset>
+    </ui:define>
+
+</ui:composition>

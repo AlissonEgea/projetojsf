@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../resources/main.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="tarefas">
+        <p:fieldset legend="Cadastrar Situaçoes ">
+
+            <p:tabView dynamic="true" id="tbv1">
+                <p:tab title="Ativo">
+                    <h:form prependId="false" id="fromSituacao">
+                        <p:growl id="msg0"/>
+                        <h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid" id="grid0">
+
+                            <h:outputLabel/>
+
+                            <h:inputHidden id="idativo" value="#{mbAtivo.ativo.idnAtivo}"/>
+
+                            <h:outputLabel for="ativo" value="Situação: "/>
+                            <p:inputText id="ativo" size="9" value="#{mbAtivo.ativo.descricaoAtivo}" 
+                                         onkeyup="this.value = this.value.toUpperCase()" required="true" 
+                                         requiredMessage="O campo Situação é obrigatorio "/>
+
+                            <p:panel>
+                                <p:commandButton value="Salvar" action="#{mbAtivo.addAtivo}" 
+                                                 image="ui icon ui-icon-disk" update="@form :formtable"/>
+
+                                <p:commandButton value="Deletar Ativo" action="#{mbAtivo.deleteAtivo}" 
+                                                 image="ui icon ui-icon-close" update="@form"/>
+                            </p:panel>
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                                    </p:tab>
+
+            </p:tabView>
+                    
+                    
+                    <h:form id="formtable">
+
+                        <p:growl id="msg1"/>
+
+                        <p:dataTable id="idsituacao" var="situacao" value="#{mbAtivo.ativos}" 
+                                     paginator="true" rows="10" emptyMessage="Nenhum registro encontrado" paginatorTemplate="{CurrentPageReport} {FirstPageLink}
+                                     {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15"  >
+                            <f:facet name="header">Lista de Situacoes </f:facet>
+
+                            <p:column >
+                                <f:facet name="header">
+                                    <h:outputText value="ID situacao "/>
+                                </f:facet> 
+                                <h:outputText value="#{situacao.idnAtivo}"/>
+                            </p:column>
+
+                            <p:column >
+                                <f:facet name="header">
+                                    <h:outputText value="Descricao: "/>
+                                </f:facet> 
+                                <h:outputText value="#{situacao.descricaoAtivo}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Editar: "/>
+                                </f:facet> 
+
+                                <p:commandButton value="Editar" image="ui-icon-pencil" ajax="false"
+                                                 process="@this" update="@form" action="#{mbAtivo.editAtivo()}">
+                                    <f:setPropertyActionListener target="#{mbAtivo.ativo}" value="#{situacao}"/>  
+                                    <f:setPropertyActionListener target="#{mbAtivo.ativo.idnAtivo}" value="#{situacao.idnAtivo}"/> 
+
+
+
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Deletar: "/>
+                                </f:facet> 
+                                <p:commandButton value="Remover" action="#{mbAtivo.deleteAtivo()}"
+                                                 image="ui-icon ui-icon-close" update="@form">
+                                    <f:setPropertyActionListener target="#{mbAtivo.ativo}"
+                                                                 value="#{situacao}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>       
+        </p:fieldset>
+    </ui:define>
+
+</ui:composition>

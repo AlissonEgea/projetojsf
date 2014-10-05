@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../resources/main.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="tarefas">
+        <p:fieldset legend="Tipo Equipamento">
+
+            <p:tabView dynamic="true" id="tbv1">
+                <p:tab title="tipoEquipamento">
+                    <h:form prependId="false" id="formTipoEquipamento">
+                        <p:growl id="msg0"/>
+                        <h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid" id="grid0">
+
+                            <h:outputLabel/>
+
+                            <h:inputHidden id="idativo" value="#{mbTipoEquipamento.tipoEquipamento.idTipoEquipamento}"/>
+                            
+                            <h:outputLabel for="codigoTipoEquipamento" value="Codigo: "/>
+                            <p:inputText id="codigoTipoEquipamento" size="30" value="#{mbTipoEquipamento.tipoEquipamento.codigoTipoEquipamento}" 
+                                          required="true" 
+                                         requiredMessage="O campo Codigo é obrigatorio "/>
+
+                            <h:outputLabel for="empresaDesc" value="Tipo Equipamento: "/>
+                            <p:inputText id="empresaDesc" size="30" value="#{mbTipoEquipamento.tipoEquipamento.descricaoTipoEquipamento}" 
+                                         onkeyup="this.value = this.value.toUpperCase()" required="true" 
+                                         requiredMessage="O campo Descricao é obrigatorio "/>
+
+                            <p:panel>
+                                <p:commandButton value="Salvar" action="#{mbTipoEquipamento.addTipoEquipamento()}" 
+                                                 image="ui icon ui-icon-disk" update="@form :formtable"/>
+
+                                <p:commandButton value="Limpar" action="#{mbTipoEquipamento.limpTipoEquipamento()}" 
+                                                 image="ui icon ui-icon-close" update="@form"/>
+                            </p:panel>
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                </p:tab>
+
+            </p:tabView>
+
+
+            <h:form id="formtable">
+
+                <p:growl id="msg1"/>
+
+                <p:dataTable id="idtipoequipamento" var="tipoequipamento" value="#{mbTipoEquipamento.tipoEquipamentos}" widgetVar="tipoequipamento" 
+                             paginator="true" rows="10" emptyMessage="Nenhum registro encontrado" paginatorTemplate="{CurrentPageReport} {FirstPageLink}
+                             {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" caseSensitiveSort="true" >
+                    
+                    <f:facet name="header">Lista de Tipos de Equipamentos 
+                    <p:outputPanel>
+                    <p:inputText id="globalFilter" onkeyup="PF('tipoequipamento').filter()" style="float:right" placeholder="Digite para pesquisar"/>
+                    </p:outputPanel>
+                    </f:facet>
+                    
+                    
+                    
+                    <p:column sortBy="#{tipoequipamento.codigoTipoEquipamento}" filterBy="#{tipoequipamento.codigoTipoEquipamento}">
+                        <f:facet name="header">
+                            <h:outputText value="Codigo Tipo: "/>
+                        </f:facet> 
+                        <h:outputText value="#{tipoequipamento.codigoTipoEquipamento}"/>
+                    </p:column>
+
+                    <p:column  filterBy="#{tipoequipamento.descricaoTipoEquipamento}" sortBy="#{tipoequipamento.descricaoTipoEquipamento}">
+                        <f:facet name="header">
+                            <h:outputText value="Descricao Tipo: "/>
+                        </f:facet> 
+                        <h:outputText value="#{tipoequipamento.descricaoTipoEquipamento}"/>
+                    </p:column>
+                    
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Editar: "/>
+                        </f:facet> 
+
+                        <p:commandButton value="Editar" image="ui-icon-pencil" ajax="false"
+                                         process="@this" update="@form" action="#{mbTipoEquipamento.editTipoEquipamento()}">
+                            <f:setPropertyActionListener target="#{mbTipoEquipamento.tipoEquipamento}" value="#{tipoequipamento}"/>  
+                            <f:setPropertyActionListener target="#{mbTipoEquipamento.tipoEquipamento.idTipoEquipamento}" value="#{mbTipoEquipamento.tipoEquipamento.idTipoEquipamento}"/> 
+
+
+
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Deletar: "/>
+                        </f:facet> 
+                        <p:commandButton value="Remover" action="#{mbTipoEquipamento.deleteTipoEquipamento()}"
+                                         image="ui-icon ui-icon-close" update="@form">
+                            <f:setPropertyActionListener target="#{mbTipoEquipamento.tipoEquipamento}"
+                                                         value="#{tipoequipamento}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>       
+        </p:fieldset>
+    </ui:define>
+
+</ui:composition>

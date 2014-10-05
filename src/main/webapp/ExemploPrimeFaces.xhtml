@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:p="http://primefaces.org/ui">  
+   
+    <h:head>  
+  
+    </h:head>  
+      
+    <h:body>  
+      asf
+        <h:form>
+    <p:growl id="growl" life="2000" />
+     
+    <p:commandButton value="Ajax Submit" id="ajax" update="growl" actionListener="#{buttonView().buttonAction}" styleClass="ui-priority-primary" />
+ 
+    <p:commandButton value="Non-Ajax Submit" id="nonAjax" actionListener="#{buttonView().buttonAction}" ajax="false" />
+ 
+    <p:commandButton value="With Icon" id="withIcon" actionListener="#{buttonView().buttonAction}" update="growl" icon="ui-icon-disk" />
+ 
+    <p:commandButton actionListener="#{buttonView().buttonAction}" id="iconOnly" update="growl" icon="ui-icon-disk" title="Icon Only" />
+ 
+    <p:commandButton value="Disabled" id="disabled" disabled="true" />
+    
+    <p:accordionPanel id="s" ></p:accordionPanel>
+    
+    
+    
+</h:form>
+    </h:body>  
+</html>  

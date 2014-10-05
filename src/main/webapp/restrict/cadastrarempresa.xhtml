@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../resources/main.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="tarefas">
+        <p:fieldset legend="Cadastrar Empresa">
+
+            <p:tabView dynamic="true" id="tbv1">
+                <p:tab title="Empresa">
+                    <h:form prependId="false" id="formEmpresa">
+                        <p:growl id="msg0"/>
+                        <h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid" id="grid0">
+
+                            <h:outputLabel/>
+
+                            <h:inputHidden id="idativo" value="#{mbEmpresa.empresa.idEmpresa}"/>
+                            
+                            <h:outputLabel for="empresaCodigo" value="Codigo Empresa: "/>
+                            <p:inputText id="empresaCodigo" size="30" value="#{mbEmpresa.empresa.codigoEmpresa}" 
+                                         onkeyup="this.value = this.value.toUpperCase()" required="true" 
+                                         requiredMessage="O campo Codigo é obrigatorio "/>
+
+                            <h:outputLabel for="empresaDesc" value="Descricao Empresa: "/>
+                            <p:inputText id="empresaDesc" size="30" value="#{mbEmpresa.empresa.descricaoEmpresa}" 
+                                         onkeyup="this.value = this.value.toUpperCase()" required="true" 
+                                         requiredMessage="O campo Descricao é obrigatorio "/>
+
+                            <h:outputLabel for="razaoemp" value="Razao Social: "/>
+                            <p:inputText id="razaoemp" size="30" value="#{mbEmpresa.empresa.razaoSocialEmp}" 
+                                         onkeyup="this.value = this.value.toUpperCase()" required="true" 
+                                         requiredMessage="O campo Descricao é obrigatorio "/>
+
+                            <h:outputLabel for="cnpjemp" value="CNPJ: "/>
+                            <p:inputMask id="cnpjemp" size="18" value="#{mbEmpresa.empresa.cnpjEmpresa}" required="true" mask="**.***.***/****-**" requiredMessage="O campo CNPJ nao foi preenchido"/>
+
+                            <h:outputLabel for="emailemp" value="E-mail: " />
+                            <p:inputText id="emailemp" size="40" value="#{mbEmpresa.empresa.emailEmpresa}" required="true" requiredMessage="O campo E-MAIL nao foi preenchido">
+                                <f:validator validatorId="emailValidator"/>
+                            </p:inputText>
+                            
+                            
+
+
+                            <p:panel>
+                                <p:commandButton value="Salvar" action="#{mbEmpresa.addEmpresa()}" 
+                                                 image="ui icon ui-icon-disk" update="@form :formtable"/>
+
+                                <p:commandButton value="Limpar" action="#{mbEmpresa.limpEmpresa()}" 
+                                                 image="ui icon ui-icon-close" update="@form"/>
+                            </p:panel>
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                </p:tab>
+
+            </p:tabView>
+
+
+            <h:form id="formtable">
+
+                <p:growl id="msg1"/>
+
+                <p:dataTable id="idempresa" var="empresa" value="#{mbEmpresa.empresas}" 
+                             paginator="true" rows="10" emptyMessage="Nenhum registro encontrado" paginatorTemplate="{CurrentPageReport} {FirstPageLink}
+                             {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15"  >
+                    <f:facet name="header">Lista de Empresas </f:facet>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Codigo Empresa: "/>
+                        </f:facet> 
+                        <h:outputText value="#{empresa.codigoEmpresa}"/>
+                    </p:column>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Descricao Empresa: "/>
+                        </f:facet> 
+                        <h:outputText value="#{empresa.descricaoEmpresa}"/>
+                    </p:column>
+                    
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Razao Social: "/>
+                        </f:facet> 
+                        <h:outputText value="#{empresa.razaoSocialEmp}"/>
+                    </p:column>
+                    
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="E-mail Empresa: "/>
+                        </f:facet> 
+                        <h:outputText value="#{empresa.emailEmpresa}"/>
+                    </p:column>
+                    
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="CNPJ: "/>
+                        </f:facet> 
+                        <h:outputText value="#{empresa.cnpjEmpresa}"/>
+                    </p:column>
+
+                    
+                    
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Editar: "/>
+                        </f:facet> 
+
+                        <p:commandButton value="Editar" image="ui-icon-pencil" ajax="false"
+                                         process="@this" update="@form" action="#{mbEmpresa.editEmpresa()}">
+                            <f:setPropertyActionListener target="#{mbEmpresa.empresa}" value="#{empresa}"/>  
+                            <f:setPropertyActionListener target="#{mbEmpresa.empresa.idEmpresa}" value="#{mbEmpresa.empresa.idEmpresa}"/> 
+
+
+
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Deletar: "/>
+                        </f:facet> 
+                        <p:commandButton value="Remover" action="#{mbEmpresa.deleteEmpresa()}"
+                                         image="ui-icon ui-icon-close" update="@form">
+                            <f:setPropertyActionListener target="#{mbEmpresa.empresa}"
+                                                         value="#{empresa}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>       
+        </p:fieldset>
+    </ui:define>
+
+</ui:composition>

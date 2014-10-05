@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
+
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./../resources/main.xhtml">
+
+    <ui:define name="tarefas">
+        <p:fieldset legend="Cadastrar Equipamento: ">
+            <br/>
+            <p:tabView dynamic="true" id="tbv1">
+                <p:tab title="Equipamento">
+                    <h:form prependId="false" id="formEquipamento">
+                        <p:growl id="msg0"/>
+                        <h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid" id="grid0">
+
+                            <h:outputLabel/>
+
+                            <h:inputHidden id="equipamento" value="#{mbEquipamento.equipamento.idEquipamento}"/>
+                            
+                            
+                            <h:outputLabel for="codigoEquipamento" value="Codigo "/>
+                            <p:inputText id="codigoEquipamento" size="40" value="#{mbEquipamento.equipamento.codigoEquipamento}" 
+                                         onkeyup="this.value = this.value.toUpperCase()" required="true" 
+                                         requiredMessage="O campo (CODIGO) e obrigatorio "/>
+
+                            <h:outputLabel for="tipoEquipamento" value="Tipo: "/>
+                            <p:selectOneMenu id="tipoEquipamento" value="#{mbEquipamento.equipamento.tipoEquipamento.idTipoEquipamento}" required="true">
+                                <f:selectItems  value="#{mbTipoEquipamento.tipoEquipamentos}" var="tipoEquipamento" itemValue="#{tipoEquipamento.idTipoEquipamento}" itemLabel="#{tipoEquipamento.descricaoTipoEquipamento}"/>
+                            </p:selectOneMenu>
+                            
+                            <h:outputLabel for="empresa" value="Empresa: "/>
+                            <p:selectOneMenu id="empresa" value="#{mbEquipamento.equipamento.empresa.idEmpresa}" required="true">
+                                <f:selectItems  value="#{mbEmpresa.empresas}" var="empresa" itemValue="#{empresa.idEmpresa}" itemLabel="#{empresa.descricaoEmpresa}"/>
+                            </p:selectOneMenu>
+                            
+                            <h:outputLabel for="setorEmpresa" value="Setor: "/>
+                            <p:selectOneMenu id="setorEmpresa" value="#{mbEquipamento.equipamento.setorEmpresa.idSetorEmpresa}" required="true">
+                                <f:selectItems  value="#{mbSetorEmpresa.setorEmpresas}" var="setorEmpresa" itemValue="#{setorEmpresa.idSetorEmpresa}" itemLabel="#{setorEmpresa.descricaoSetorEmpresa}"/>
+                            </p:selectOneMenu>
+                            
+                            <h:outputLabel for="marcaEquipamento" value="Marca Equipamento "/>
+                            <p:inputText id="marcaEquipamento" size="40" value="#{mbEquipamento.equipamento.marcaEquipamento}" 
+                                         onkeyup="this.value = this.value.toUpperCase()" required="true" 
+                                         requiredMessage="O campo (Marca) e obrigatorio "/>
+                            
+                            <h:outputLabel for="modeloEquipamento" value="Modelo Equipamento "/>
+                            <p:inputText id="modeloEquipamento" size="40" value="#{mbEquipamento.equipamento.modeloEquipamento}" 
+                                         onkeyup="this.value = this.value.toUpperCase()" required="true" 
+                                         requiredMessage="O campo (Modelo) e obrigatorio "/>
+                            
+                            <h:outputLabel for="numeroserie" value="Numero Serie: "/>
+                            <p:inputText id="numeroserie" size="40" value="#{mbEquipamento.equipamento.numeroSerieEquipamento}" 
+                                          required="true" 
+                                         requiredMessage="O campo (Numero de Serie) e obrigatorio "/>
+                            
+                            <h:outputLabel for="patrimonioEquipamento" value="Patrimonio Equipamento "/>
+                            <p:inputText id="patrimonioEquipamento" size="40" value="#{mbEquipamento.equipamento.patrimonioEquipamento}" 
+                                         onkeyup="this.value = this.value.toUpperCase()" required="true" 
+                                         requiredMessage="O campo (Patrimonio) e obrigatorio "/>
+
+
+                            <p:panel>
+                                <p:commandButton value="Salvar" action="#{mbEquipamento.addEquipamento()}"  
+                                                 image="ui icon ui-icon-disk" update="@form :formtable"/>
+
+                                <p:commandButton value="Cancelar" action="#{mbEquipamento.limpEquipamento()}" 
+                                                 image="ui icon ui-icon-close" update="@form"/>
+                            </p:panel>
+
+                        </h:panelGrid>
+
+                    </h:form>
+                </p:tab>
+
+            </p:tabView>
+
+            <h:form id="formtable">
+                <p:growl id="msg1"/>
+                <p:dataTable id="idTabela" var="equipamento" value="#{mbEquipamento.equipamentos}" 
+                             paginator="true" rows="10" emptyMessage="Nenhum registro encontrado" paginatorTemplate="{CurrentPageReport} {FirstPageLink}
+                             {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15" widgetVar="equipamentoFiltro" >
+                    <f:facet name="header">Lista de Equipamentos 
+                    <p:outputPanel>
+                        <p:inputText id="globalFilter" onkeyup="PF('equipamentoFiltro').filter()" style="float:right" placeholder="Digite para pesquisar"/>
+                    </p:outputPanel>
+                    </f:facet>
+                    
+                    <p:column sortBy="#{equipamento.numeroSerieEquipamento}" filterBy="#{equipamento.numeroSerieEquipamento}">
+                        <f:facet name="header">
+                            <h:outputText value="Codigo: "/>
+                        </f:facet> 
+                        <h:outputText value="#{equipamento.codigoEquipamento}"/>
+                    </p:column>
+                    
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Empresa: "/>
+                        </f:facet> 
+                        <h:outputText value="#{equipamento.empresa.descricaoEmpresa}"/>
+                    </p:column>
+                    
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Setor Empresa: "/>
+                        </f:facet> 
+                        <h:outputText value="#{equipamento.setorEmpresa.descricaoSetorEmpresa}"/>
+                    </p:column>
+                    
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Marca Equipamento: "/>
+                        </f:facet> 
+                        <h:outputText value="#{equipamento.marcaEquipamento}"/>
+                    </p:column>
+                    
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Modelo Equipamento: "/>
+                        </f:facet> 
+                        <h:outputText value="#{equipamento.modeloEquipamento}"/>
+                    </p:column>
+                    
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Numero Serie: "/>
+                        </f:facet> 
+                        <h:outputText value="#{equipamento.numeroSerieEquipamento}"/>
+                    </p:column>
+                    
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Data Cadastro: "/>
+                        </f:facet> 
+                        <h:outputText value="#{equipamento.dataCadastro}"/>
+                    </p:column>
+                    
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Data Ultima Atualizacao "/>
+                        </f:facet> 
+                        <h:outputText value="#{equipamento.dataUltimaModificacao}"/>
+                    </p:column>
+                    
+                    
+                    
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Descricao: "/>
+                        </f:facet> 
+                        <h:outputText value="#{equipamento.tipoEquipamento.descricaoTipoEquipamento}"/>
+                    </p:column>
+                    
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Patrimonio: "/>
+                        </f:facet> 
+                        <h:outputText value="#{equipamento.patrimonioEquipamento}"/>
+                    </p:column>
+
+                    
+
+
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Editar: "/>
+                        </f:facet> 
+
+                        <p:commandButton action="#{mbEquipamento.editEquipamento()}" value="Editar" image="ui-icon-pencil" ajax="false"
+                                         process="@this" update=":tbv1:formCidade">
+                            <f:setPropertyActionListener target="#{mbEquipamento.equipamento}" value="#{equipamento}"/> 
+                          
+                            
+
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Deletar: "/>
+                        </f:facet> 
+                        <p:commandButton value="Remover" action="#{mbEquipamento.deleteEquipamento()}"
+                                         image="ui-icon ui-icon-close" update="@form">
+                            <f:setPropertyActionListener target="#{mbEquipamento.equipamento}"
+                                                         value="#{equipamento}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>       
+        </p:fieldset>
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../resources/main.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="tarefas">
+        <p:fieldset legend="Cadastrar Nova Ocorrencia ">
+
+            <p:tabView dynamic="true" id="tbv1">
+                <p:tab title="Nova Ocorrencia">
+                    <h:form prependId="false" id="formNovaOcorrencia" enctype="multipart/form-data">
+                        <p:growl id="msg0"/>
+                        <h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid" id="grid0">
+
+                            <h:outputLabel/>
+
+                            <h:inputHidden id="idativo" value="#{mbNovaOcorrencia.novaOcorrencia.idNovaOcorrencia}"/>
+
+                            <h:outputLabel for="listaEquipamento" value="Equipamento: "/>
+                            <p:selectOneMenu id="listaEquipamento" value="#{mbNovaOcorrencia.novaOcorrencia.equipamento.idEquipamento}" required="true">
+                                <f:selectItems  value="#{mbEquipamento.equipamentos}" var="equipamento" itemValue="#{equipamento.idEquipamento}" itemLabel="#{equipamento.patrimonioEquipamento}"/>
+                            </p:selectOneMenu>
+
+
+                            <h:outputLabel for="dataOcorrencia" value="Data da Ocorrencia: " />
+                            <p:calendar id="dataOcorrencia" size="40" value="#{mbNovaOcorrencia.novaOcorrencia.dataOcorrencia}" required="true" 
+                                        requiredMessage="O campo Data da Ocorrencia nao foi preenchido"
+                                        locale="pt_BR" navigator="true" pattern="dd/MM/yyyy"/>
+
+                        
+
+                            <p:inputTextarea id="descricaoOcorrencia" value="#{mbNovaOcorrencia.novaOcorrencia.descricaoOcorrencia}" rows="5" cols="30" counter="mostraContador" maxlength="100" counterTemplate="{0} characters remaining." autoResize="false" />
+                            <h:outputText id="mostraContador" />
+
+
+
+
+                            <p:panel>
+                                <p:commandButton value="Salvar" action="#{mbNovaOcorrencia.addNovaOcorrencia()}" 
+                                                 image="ui icon ui-icon-disk" update="@form :formtable"/>
+
+                                <p:commandButton value="Limpar" action="#{mbNovaOcorrencia.limpNovaOcorrencia()}" 
+                                                 image="ui icon ui-icon-close" update="@form"/>
+                            </p:panel>
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                </p:tab>
+
+            </p:tabView>
+
+
+            <h:form id="formtable">
+
+                <p:growl id="msg1"/>
+
+                <p:dataTable id="idocorrencia" var="ocorrencia" value="#{mbNovaOcorrencia.novaOcorrencias}" 
+                             paginator="true" rows="10" emptyMessage="Nenhum registro encontrado" paginatorTemplate="{CurrentPageReport} {FirstPageLink}
+                             {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15"  >
+                    <f:facet name="header">Lista de Ocorrencias </f:facet>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Equipamento "/>
+                        </f:facet> 
+                        <h:outputText value="#{ocorrencia.equipamento.patrimonioEquipamento}"/>
+                    </p:column>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Data Ocorrencia "/>
+                        </f:facet> 
+                        <h:outputText value="#{ocorrencia.dataOcorrencia}"/>
+                    </p:column>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Anexo Ocorrencia "/>
+                        </f:facet> 
+                        <h:outputText value="#{ocorrencia.anexoOcorrencia}"/>
+                    </p:column>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Descricao Ocorrencia "/>
+                        </f:facet> 
+                        <h:outputText value="#{ocorrencia.descricaoOcorrencia}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Editar: "/>
+                        </f:facet> 
+
+                        <p:commandButton value="Editar" image="ui-icon-pencil" ajax="false"
+                                         process="@this" update="@form" action="#{mbNovaOcorrencia.editNovaOcorrencia()}">
+                            <f:setPropertyActionListener target="#{mbNovaOcorrencia.novaOcorrencia}" value="#{ocorrencia}"/>  
+                            <f:setPropertyActionListener target="#{mbNovaOcorrencia.novaOcorrencia.idNovaOcorrencia}" value="#{ocorrencia.idNovaOcorrencia}"/> 
+
+
+
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Deletar: "/>
+                        </f:facet> 
+                        <p:commandButton value="Remover" action="#{mbNovaOcorrencia.deleteNovaOcorrencia()}"
+                                         image="ui-icon ui-icon-close" update="@form">
+                            <f:setPropertyActionListener target="#{mbNovaOcorrencia.novaOcorrencia}"
+                                                         value="#{ocorrencia}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>       
+        </p:fieldset>
+    </ui:define>
+
+</ui:composition>
